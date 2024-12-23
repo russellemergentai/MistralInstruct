@@ -1,4 +1,4 @@
-transformers
-torch  # Assuming you are using PyTorch for Mistral 7B
-langchain
+# transformers
+# torch  # Assuming you are using PyTorch for Mistral 7B
+# langchain
 flask  

@@ -25,11 +25,3 @@
              gcloud auth configure-docker
              docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/simple-python-docker:$GITHUB_SHA .
              docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/simple-python-docker:$GITHUB_SHA
-
-         - name: Deploy to Cloud Run
-           run: |
-             gcloud run deploy simple-python-docker \
-               --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/simple-python-docker:$GITHUB_SHA \
-               --platform managed \
-               --region us-central1 \
-               --allow-unauthenticated

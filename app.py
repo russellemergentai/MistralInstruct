@@ -1,5 +1,11 @@
 from flask import Flask, request, jsonify
-from transformers import AutoModelForCausalLM, AutoTokenizer
+import os
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from langchain import HuggingFacePipeline
+
+# Set the token as an environment variable
+os.environ["HF_HUB_TOKEN"] = "your_hugging_face_token"
 
 # Load the model and tokenizer
 model_name = "mistralai/Mistral-7B-Instruct"

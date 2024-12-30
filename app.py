@@ -3,9 +3,22 @@ import os
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from langchain import HuggingFacePipeline
+from google.cloud import secretmanager
+
+def access_secret_version(project_id, secret_id, version_id):
+    client = secretmanager.SecretManagerServiceClient()
+    name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
+    response = client.access_secret_version(request={"name": name})
+    return response.payload.data.decode("UTF-8")
+
+# Get the token from Secrets Manager
+project_id = "your-project-id"  # Replace with your actual project ID
+secret_id = "huggingface-token-secret"  # Replace with the ID of your secret
+version_id = "latest"  # Use the latest version of the secret
+huggingface_token = access_secret_version(project_id, secret_id, version_id)
 
 # Set the token as an environment variable
-os.environ["HF_HUB_TOKEN"] = "your_hugging_face_token"
+os.environ["HF_HUB_TOKEN"] = huggingface_token
 
 # Load the model and tokenizer
 model_name = "mistralai/Mistral-7B-Instruct"

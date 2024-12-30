@@ -1,3 +1,5 @@
 Flask
-transformers
 torch
+transformers
+langchain
+google-cloud-secret-manager

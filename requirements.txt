@@ -1,5 +1,4 @@
-Flask
-torch
-transformers
-langchain
-google-cloud-secret-manager
+Flask==2.1.1
+torch==1.11.0
+transformers==4.18.0
+google-cloud-secret-manager==2.10.1

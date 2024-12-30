@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 import os
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
-from langchain import HuggingFacePipeline
 from google.cloud import secretmanager
 
 def access_secret_version(project_id, secret_id, version_id):
@@ -22,8 +21,9 @@ os.environ["HF_HUB_TOKEN"] = huggingface_token
 
 # Load the model and tokenizer
 model_name = "mistralai/Mistral-7B-Instruct"
+config = BitsAndBytesConfig(load_in_8bit=True)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name, config=config)
 
 app = Flask(__name__)
 
@@ -37,7 +37,7 @@ def generate():
 
     # Generate text
     input_ids = tokenizer(prompt, return_tensors="pt").input_ids
-    output = model.generate(input_ids)
+    output = model.generate(input_ids, max_length=200)
     generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
 
     return jsonify({'generated_text': generated_text})

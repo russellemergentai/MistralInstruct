@@ -14,7 +14,7 @@ def generate():
     prompt = data.get('prompt')
 
     if not prompt:
-        return jsonify({'error': 'Missing prompt'}), 400
+        return jsonify({'error': 'missing prompt'}), 400
 
     # Generate text
     input_ids = tokenizer(prompt, return_tensors="pt").input_ids

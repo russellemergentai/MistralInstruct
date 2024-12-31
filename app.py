@@ -11,8 +11,8 @@ def access_secret_version(project_id, secret_id, version_id):
     return response.payload.data.decode("UTF-8")
 
 # Get the token from Secrets Manager
-project_id = "your-project-id"  # Replace with your actual project ID
-secret_id = "huggingface-token-secret"  # Replace with the ID of your secret
+project_id = "corded-photon-441814-g7"  # Replace with your actual project ID
+secret_id = "HF_HUB_TOKEN"  # projects/226946013448/secrets/HF_HUB_TOKEN
 version_id = "latest"  # Use the latest version of the secret
 huggingface_token = access_secret_version(project_id, secret_id, version_id)
 

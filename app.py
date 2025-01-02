@@ -3,6 +3,7 @@ import os
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from google.cloud import secretmanager
+import logging
 
 def access_secret_version(project_id, secret_id, version_id):
     client = secretmanager.SecretManagerServiceClient()
@@ -10,17 +11,25 @@ def access_secret_version(project_id, secret_id, version_id):
     response = client.access_secret_version(request={"name": name})
     return response.payload.data.decode("UTF-8")
 
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+    
 # Get the token from Secrets Manager
 project_id = "corded-photon-441814-g7" 
 secret_id = "HF_HUB_TOKEN"  # projects/226946013448/secrets/HF_HUB_TOKEN
 version_id = "latest"  # Use the latest version of the secret
 huggingface_token = access_secret_version(project_id, secret_id, version_id)
 
+logging.info("Hugging face TOKEN is: %s", huggingface_token)
+
 # Set the token as an environment variable
 os.environ["HF_HUB_TOKEN"] = huggingface_token
 
 # Load the model and tokenizer
-model_name = "mistralai/Mistral-7B-Instruct"
+model_name = "mistralai/Mistral-7B-Instruct-v0.3"
 config = BitsAndBytesConfig(load_in_8bit=True)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, config=config)

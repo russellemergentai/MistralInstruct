@@ -28,6 +28,10 @@ logging.info("Hugging face TOKEN is: %s", huggingface_token)
 # Set the token as an environment variable
 os.environ["HF_HUB_TOKEN"] = huggingface_token
 
+from huggingface_hub import login
+
+login(huggingface_token)
+
 # Load the model and tokenizer
 model_name = "mistralai/Mistral-7B-Instruct-v0.3"
 config = BitsAndBytesConfig(load_in_8bit=True)
